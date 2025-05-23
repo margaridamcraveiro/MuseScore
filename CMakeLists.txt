@@ -179,6 +179,10 @@ endif()
 add_subdirectory(share)
 add_subdirectory(src)
 
+###########################################
+# Add midi import panel
+###########################################
+include(src/importexport/midi/internal/midipanel/importmidi_ui.cmake)
 
 ###########################################
 # Setup Packaging

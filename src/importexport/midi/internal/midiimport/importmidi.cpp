@@ -78,6 +78,8 @@
 #include "importmidi_tuplet_tonotes.h"
 #include "importmidi_voice.h"
 
+#include "../midipanel/importmidi_panel.h"
+
 #include "log.h"
 
 using namespace mu::engraving;
@@ -1279,6 +1281,21 @@ Err importMidi(MasterScore* score, const QString& name)
         fp.close();
 
         loadMidiData(mf);
+
+        // --- ADICIONE O POP-UP AQUI ---
+        // Exemplo: mostrar painel de importação MIDI
+        #ifndef MUSESCORE_NO_GUI
+        Ms::ImportMidiPanel* panel = new Ms::ImportMidiPanel();
+        panel->show();
+        // ou panel->exec(); se for QDialog
+        #endif
+        // --- FIM POP-UP ---
+
+        // #ifndef MUSESCORE_NO_GUI
+        // #include <QMessageBox>
+        // QMessageBox::information(nullptr, "MIDI Import", "slay");
+        // #endif
+
         opers.setMidiFileData(name, mf);
     }
 

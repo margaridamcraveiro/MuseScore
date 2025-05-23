@@ -23,11 +23,13 @@ declare_module(iex_midi)
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midishared/midishared.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midiimport/midiimport.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midiexport/midiexport.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/internal/midipanel/importmidi_ui.cmake)
 
 set(MODULE_SRC
     ${MIDISHARED_SRC}
     ${MIDIIMPORT_SRC}
     ${MIDIEXPORT_SRC}
+    ${IMPORTMIDIUI_SRC}
     ${CMAKE_CURRENT_LIST_DIR}/midimodule.cpp
     ${CMAKE_CURRENT_LIST_DIR}/midimodule.h
     ${CMAKE_CURRENT_LIST_DIR}/imidiconfiguration.h
