@@ -76,10 +76,10 @@ void MidiModule::registerExports()
     ioc()->registerExport<IMidiInPort>(moduleName(), m_midiInPort);
 }
 
-void MidiModule::registerUiTypes()
-{
-    qmlRegisterType<MidiPortDevModel>("Muse.Midi", 1, 0, "MidiPortDevModel");
-}
+// void MidiModule::registerUiTypes()
+// {
+//     qmlRegisterType<MidiPortDevModel>("Muse.Midi", 1, 0, "MidiPortDevModel");
+// }
 
 void MidiModule::onInit(const IApplication::RunMode& mode)
 {

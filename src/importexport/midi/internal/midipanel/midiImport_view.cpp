@@ -1,4 +1,4 @@
-#include "importmidi_view.h"
+#include "midiImport_view.h"
 
 #include <QToolTip>
 

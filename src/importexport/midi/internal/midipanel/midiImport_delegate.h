@@ -1,7 +1,7 @@
 #ifndef IMPORTMIDI_DELEGATE_H
 #define IMPORTMIDI_DELEGATE_H
 
-#include "importmidi_view.h"
+#include "midiImport_view.h"
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QVBoxLayout>

@@ -1,12 +1,14 @@
-#include "importmidi_panel.h"
+#include "midiImport_panel.h"
 
-#include "ui_importmidi_panel.h"
-#include "importmidi_delegate.h"
+#include "midiImport_delegate.h"
+#include "ui_midiImport_panel.h"
 
 #include "importexport/midi/internal/midiimport/importmidi_model.h"
 #include "importexport/midi/internal/midiimport/importmidi_lyrics.h"
 #include "importexport/midi/internal/midiimport/importmidi_operations.h"
 #include "importexport/midi/internal/midiimport/importmidi_inner.h"
+
+#include "framework/uicomponents/view/menuitem.h"
 
 #include "engraving/dom/masterscore.h"
 
@@ -17,30 +19,60 @@
 
 namespace Ms {
 
-ImportMidiPanel::ImportMidiPanel(QWidget *parent)
-      : QWidget(parent)
-      , _ui(new Ui::ImportMidiPanel)
+MidiImportPanel::MidiImportPanel(QObject *parent)
+      : AbstractMenuModel(parent)
+      , _ui(new Ui::MidiImportPanel)
       , _updateUiTimer(new QTimer)
       , _preferredVisible(false)
       , _importInProgress(false)
       , _reopenInProgress(false)
       {
-      _ui->setupUi(this);
+      //_ui->setupUi(this);
 
       _model = new mu::iex::midi::TracksModel();
-      _delegate = new OperationsDelegate(parentWidget(), true);
+      _delegate = new OperationsDelegate(nullptr, true);
       _ui->tracksView->setModel(_model);
       _ui->tracksView->setItemDelegate(_delegate);
 
-      setupUi();
+      //setupUi();
       }
 
-ImportMidiPanel::~ImportMidiPanel()
+MidiImportPanel::~MidiImportPanel()
       {
       delete _ui;
       }
 
-void ImportMidiPanel::setMidiFile(const QString &fileName)
+// void MidiImportPanel::load()
+// {
+//     MenuItemList items {
+//         makeViewMenu()
+//     };
+
+//     setItems(items);
+// }
+
+QString MidiImportPanel::userName(){
+    return m_userName;
+}
+
+void MidiImportPanel::setUserName(const QString &userName){
+    if (userName == m_userName)
+        return;
+
+    m_userName = userName;
+    emit userNameChanged();
+}
+
+bool MidiImportPanel::isVisible() const { return _visible; }
+
+void MidiImportPanel::setVisible(bool visible) {
+      if (_visible == visible)
+      return;
+      _visible = visible;
+      emit visibleChanged();
+}
+
+void MidiImportPanel::setMidiFile(const QString &fileName)
       {
       if (_reopenInProgress)
             _reopenInProgress = false;
@@ -88,7 +120,7 @@ void ImportMidiPanel::setMidiFile(const QString &fileName)
       _ui->tracksView->setHHeaderResizeMode(QHeaderView::ResizeToContents);
       }
 
-void ImportMidiPanel::saveTableViewState()
+void MidiImportPanel::saveTableViewState()
       {
       mu::iex::midi::MidiOperations::Data &opers = mu::iex::midi::midiImportOperations;
       mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, _midiFile);
@@ -99,7 +131,7 @@ void ImportMidiPanel::saveTableViewState()
       opers.data()->VHeaderData = vData;
       }
 
-void ImportMidiPanel::restoreTableViewState()
+void MidiImportPanel::restoreTableViewState()
       {
       mu::iex::midi::MidiOperations::Data &opers = mu::iex::midi::midiImportOperations;
       mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, _midiFile);
@@ -110,7 +142,7 @@ void ImportMidiPanel::restoreTableViewState()
       _ui->tracksView->restoreVHeaderState(vData);
       }
 
-void ImportMidiPanel::resetTableViewState()
+void MidiImportPanel::resetTableViewState()
       {
       _ui->tracksView->setFrozenRowCount(0);
       _ui->tracksView->setFrozenColCount(0);
@@ -118,13 +150,13 @@ void ImportMidiPanel::resetTableViewState()
       _ui->tracksView->resetVHeader();
       }
 
-bool ImportMidiPanel::isMidiFile(const QString &fileName)
+bool MidiImportPanel::isMidiFile(const QString &fileName)
       {
       const QString extension = QFileInfo(fileName).suffix().toLower();
       return (extension == "mid" || extension == "midi" || extension == "kar");
       }
 
-void ImportMidiPanel::setupUi()
+void MidiImportPanel::setupUi()
       {
       connect(_updateUiTimer, SIGNAL(timeout()), this, SLOT(updateUi()));
       connect(_ui->pushButtonApply, SIGNAL(clicked()), SLOT(applyMidiImport()));
@@ -142,7 +174,7 @@ void ImportMidiPanel::setupUi()
       fillCharsetList();
       }
 
-void ImportMidiPanel::fillCharsetList()
+void MidiImportPanel::fillCharsetList()
       {
       QFontMetrics fm(_ui->comboBoxCharset->font());
 
@@ -170,7 +202,7 @@ void ImportMidiPanel::fillCharsetList()
       _ui->comboBoxCharset->view()->setMinimumWidth(maxWidth);
       }
 
-void ImportMidiPanel::updateUi()
+void MidiImportPanel::updateUi()
       {
       _ui->pushButtonApply->setEnabled(canImportMidi());
       _ui->pushButtonCancel->setEnabled(canTryCancelChanges());
@@ -180,16 +212,15 @@ void ImportMidiPanel::updateUi()
       _ui->pushButtonDown->setEnabled(canMoveTrackDown(visualIndex));
       }
 
-void ImportMidiPanel::hidePanel()
-      {
+void MidiImportPanel::hidePanel(){
       if (isVisible()) {
             setVisible(false);
             emit closeClicked();
-            _preferredVisible = false;
-            }
+            _preferredVisible = false;  
       }
+}
 
-void ImportMidiPanel::setReorderedIndexes()
+void MidiImportPanel::setReorderedIndexes()
       {
       auto &opers = mu::iex::midi::midiImportOperations;
       for (int i = 0; i != _model->trackCount(); ++i) {
@@ -200,7 +231,7 @@ void ImportMidiPanel::setReorderedIndexes()
             }
       }
 
-void ImportMidiPanel::applyMidiImport()
+void MidiImportPanel::applyMidiImport()
       {
       if (!canImportMidi())
             return;
@@ -227,13 +258,13 @@ void ImportMidiPanel::applyMidiImport()
       _importInProgress = false;
       }
 
-void ImportMidiPanel::cancelChanges()
+void MidiImportPanel::cancelChanges()
       {
       if (canTryCancelChanges())
             doCancelChanges();
       }
 
-void ImportMidiPanel::doCancelChanges()
+void MidiImportPanel::doCancelChanges()
       {
       auto &opers = mu::iex::midi::midiImportOperations;
       mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, _midiFile);
@@ -253,18 +284,18 @@ void ImportMidiPanel::doCancelChanges()
       _ui->tracksView->setHHeaderResizeMode(QHeaderView::ResizeToContents);
       }
 
-void ImportMidiPanel::instrumentTemplatesChanged()
+void MidiImportPanel::instrumentTemplatesChanged()
       {
       if (fileDataAvailable(_midiFile))
             doCancelChanges();
       }
 
-bool ImportMidiPanel::canImportMidi() const
+bool MidiImportPanel::canImportMidi() const
       {
       return QFile(_midiFile).exists() && _model->trackCountForImport() > 0;
       }
 
-bool ImportMidiPanel::canTryCancelChanges() const
+bool MidiImportPanel::canTryCancelChanges() const
       {
       if (!_model->isAllApplied())
             return true;
@@ -281,39 +312,39 @@ bool ImportMidiPanel::canTryCancelChanges() const
       return opers.data()->VHeaderData != vData;
       }
 
-bool ImportMidiPanel::fileDataAvailable(const QString& midiFile)
+bool MidiImportPanel::fileDataAvailable(const QString& midiFile)
       {
       auto &opers = mu::iex::midi::midiImportOperations;
       mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, midiFile);
       return bool(opers.data());
       }
 
-bool ImportMidiPanel::canMoveTrackUp(int visualIndex) const
+bool MidiImportPanel::canMoveTrackUp(int visualIndex) const
       {
       return _model->trackCount() > 1 && visualIndex > 1;
       }
 
-bool ImportMidiPanel::canMoveTrackDown(int visualIndex) const
+bool MidiImportPanel::canMoveTrackDown(int visualIndex) const
       {
       return _model->trackCount() > 1
                   && visualIndex < _model->trackCount() && visualIndex > 0;
       }
 
-void ImportMidiPanel::moveTrackUp()
+void MidiImportPanel::moveTrackUp()
       {
       int visIndex = currentVisualIndex();
       if (canMoveTrackUp(visIndex))
             _ui->tracksView->verticalHeader()->moveSection(visIndex, visIndex - 1);
       }
 
-void ImportMidiPanel::moveTrackDown()
+void MidiImportPanel::moveTrackDown()
       {
       const int visIndex = currentVisualIndex();
       if (canMoveTrackDown(visIndex))
             _ui->tracksView->verticalHeader()->moveSection(visIndex, visIndex + 1);
       }
 
-int ImportMidiPanel::currentVisualIndex() const
+int MidiImportPanel::currentVisualIndex() const
       {
       const auto selectedItems = _ui->tracksView->selectionModel()->selection().indexes();
       int curRow = -1;
@@ -324,7 +355,7 @@ int ImportMidiPanel::currentVisualIndex() const
       return visIndex;
       }
 
-void ImportMidiPanel::excludeMidiFile(const QString &fileName)
+void MidiImportPanel::excludeMidiFile(const QString &fileName)
       {
                   // because button "Apply" of MIDI import operations
                   // causes reopen of the current score
@@ -343,12 +374,12 @@ void ImportMidiPanel::excludeMidiFile(const QString &fileName)
             }
       }
 
-void ImportMidiPanel::setPreferredVisible(bool visible)
+void MidiImportPanel::setPreferredVisible(bool visible)
       {
       _preferredVisible = visible;
       }
 
-void ImportMidiPanel::setReopenInProgress()
+void MidiImportPanel::setReopenInProgress()
       {
       _reopenInProgress = true;
       }

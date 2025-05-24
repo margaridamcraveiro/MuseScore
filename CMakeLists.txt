@@ -182,7 +182,7 @@ add_subdirectory(src)
 ###########################################
 # Add midi import panel
 ###########################################
-include(src/importexport/midi/internal/midipanel/importmidi_ui.cmake)
+include(src/importexport/midi/internal/midipanel/midiImport_ui.cmake)
 
 ###########################################
 # Setup Packaging

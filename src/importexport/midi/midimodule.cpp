@@ -28,6 +28,8 @@
 #include "project/inotationwritersregister.h"
 #include "internal/notationmidiwriter.h"
 
+#include "importexport/midi/internal/midipanel/midiImport_panel.h"
+
 #include "internal/midiconfiguration.h"
 
 #include "log.h"
@@ -35,6 +37,11 @@
 using namespace muse::modularity;
 using namespace mu::iex::midi;
 using namespace mu::project;
+
+static void midi_init_qrc()
+{
+    Q_INIT_RESOURCE(midi);
+}
 
 std::string MidiModule::moduleName() const
 {
@@ -60,6 +67,18 @@ void MidiModule::resolveImports()
         writers->reg({ "mid", "midi", "kar" }, std::make_shared<NotationMidiWriter>(iocContext()));
     }
 }
+
+void MidiModule::registerResources()
+{
+    midi_init_qrc();
+}
+
+
+// void MidiModule::registerUiTypes()
+// {
+//     qmlRegisterType<Ms::MidiImportPanel>("MuseScore.Midi", 1, 0, "MidiImportPanel");
+    
+// }
 
 void MidiModule::onInit(const muse::IApplication::RunMode& mode)
 {

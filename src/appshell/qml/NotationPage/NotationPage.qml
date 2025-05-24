@@ -34,6 +34,8 @@ import MuseScore.Inspector 1.0
 import MuseScore.InstrumentsScene 1.0
 import MuseScore.Playback 1.0
 
+import MuseScore.Midi
+
 DockPage {
     id: root
 
@@ -479,6 +481,38 @@ DockPage {
                     pianoKeyboardPanel.contextMenuModel = contextMenuModel
                 }
             }
+        },
+
+        DockPanel {
+            id: midiImportPanel
+
+            objectName: root.pageModel.midiImportPanelName()
+            title: qsTrc("appshell", "Midi Import Panel")
+
+            height: 200
+            minimumHeight: root.horizontalPanelMinHeight
+            maximumHeight: root.horizontalPanelMaxHeight
+
+            groupName: root.horizontalPanelsGroup
+
+            //! NOTE: hidden by default
+            visible: false
+
+            location: Location.Bottom
+
+            dropDestinations: root.horizontalPanelDropDestinations
+
+            navigationSection: root.navigationPanelSec(midiImportPanel.location)
+
+            MidiImportPanel {
+                navigationSection: midiImportPanel.navigationSection
+                contentNavigationPanelOrderStart: midiImportPanel.contentNavigationPanelOrderStart
+
+                // Component.onCompleted: {
+                //     midiImportPanel.contextMenuModel = contextMenuModel
+                // }
+            }
+            // Item{}
         },
 
         DockPanel {

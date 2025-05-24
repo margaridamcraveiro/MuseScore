@@ -50,7 +50,7 @@ public:
     std::string moduleName() const override;
 
     void registerExports() override;
-    void registerUiTypes() override;
+    // void registerUiTypes() override;
     void onInit(const IApplication::RunMode& mode) override;
     void onDeinit() override;
 

@@ -60,6 +60,8 @@
 #include "view/pianokeyboard/pianokeyboardview.h"
 #include "view/pianokeyboard/pianokeyboardpanelcontextmenumodel.h"
 
+//#include "importexport/midi/internal/midipanel/midiImport_panel.h"
+
 #include "ui/iinteractiveuriregister.h"
 #include "view/widgets/editstyle.h"
 #include "view/widgets/measureproperties.h"
@@ -201,7 +203,7 @@ void NotationModule::registerUiTypes()
     qmlRegisterType<EditPercussionShortcutModel>("MuseScore.NotationScene", 1, 0, "EditPercussionShortcutModel");
     qmlRegisterType<PianoKeyboardView>("MuseScore.NotationScene", 1, 0, "PianoKeyboardView");
     qmlRegisterType<PianoKeyboardPanelContextMenuModel>("MuseScore.NotationScene", 1, 0, "PianoKeyboardPanelContextMenuModel");
-
+    //qmlRegisterType<Ms::MidiImportPanel>("MuseScore.Midi", 1, 0, "MidiImportPanel");
     qmlRegisterUncreatableType<AbstractElementPopupModel>("MuseScore.NotationScene", 1, 0, "Notation",
                                                           "Not creatable as it is an enum type");
     qmlRegisterType<HarpPedalPopupModel>("MuseScore.NotationScene", 1, 0, "HarpPedalPopupModel");

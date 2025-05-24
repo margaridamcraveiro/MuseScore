@@ -134,6 +134,11 @@ QString NotationPageModel::pianoKeyboardPanelName() const
     return PIANO_KEYBOARD_PANEL_NAME;
 }
 
+QString NotationPageModel::midiImportPanelName() const
+{
+    return MIDI_IMPORT_PANEL_NAME;
+}
+
 QString NotationPageModel::timelinePanelName() const
 {
     return TIMELINE_PANEL_NAME;
