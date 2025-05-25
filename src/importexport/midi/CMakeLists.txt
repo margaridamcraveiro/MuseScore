@@ -20,6 +20,9 @@
 
 declare_module(iex_midi)
 
+set(MODULE_QRC midiImportPanel.qrc)
+set(MODULE_QML_IMPORT ${CMAKE_CURRENT_LIST_DIR}/qml)
+
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midishared/midishared.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midiimport/midiimport.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midiexport/midiexport.cmake)

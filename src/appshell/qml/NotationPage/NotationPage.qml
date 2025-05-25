@@ -34,7 +34,7 @@ import MuseScore.Inspector 1.0
 import MuseScore.InstrumentsScene 1.0
 import MuseScore.Playback 1.0
 
-import MuseScore.Midi
+import MuseScore.Midi 1.0
 
 DockPage {
     id: root

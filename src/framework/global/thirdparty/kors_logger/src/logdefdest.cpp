@@ -94,6 +94,8 @@ void ConsoleLogDest::write(const LogMsg& logMsg)
 {
     std::string log = m_layout.output(logMsg);
 
+    std::cout << log << std::endl;
+
 #ifdef _WIN32
     std::wstring str = std::wstring(log.begin(), log.end());
     size_t preview = 0;

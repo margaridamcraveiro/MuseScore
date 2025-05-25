@@ -1,2 +1,2 @@
 module MuseScore.Midi
-MidiImportPanel 1.0 importmidi_panel.qml
+MidiImportPanel 1.0 MidiImportPanel.qml

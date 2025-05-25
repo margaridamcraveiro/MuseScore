@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>midi/qml/MuseScore/Midi/qmldir</file>
-        <file>midi/qml/MuseScore/Midi/MidiImportPanel.qml</file>
-    </qresource>
-</RCC>
