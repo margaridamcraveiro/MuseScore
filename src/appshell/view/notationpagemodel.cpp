@@ -159,8 +159,6 @@ QString NotationPageModel::statusBarName() const
     return NOTATION_STATUSBAR_NAME;
 }
 
-
-
 void NotationPageModel::onNotationChanged()
 {
     INotationPtr notation = globalContext()->currentNotation();
@@ -168,9 +166,12 @@ void NotationPageModel::onNotationChanged()
         return;
     }
 
-    // open the midi panel
-    setMidiImportPanelVisible(true);
-
+    setMidiImportPanelVisible(false);
+    // if its a midi file, opens the midi import panel
+    bool check = isMidiFile(globalContext()->currentProject()->path().toQString());
+    if(check)
+        setMidiImportPanelVisible(true);
+    
     INotationNoteInputPtr noteInput = notation->interaction()->noteInput();
     noteInput->stateChanged().onNotify(this, [this]() {
         updateDrumsetPanelVisibility();
@@ -344,20 +345,7 @@ void NotationPageModel::setMidiImportPanelVisible(bool visible)
     setMidiImportPanelOpen(visible);
 }
 
-// void NotationPageModel::toggleMidiImportPanel()
-// {
-//     setMidiImportPanelVisible(!isMidiImportPanelVisible());
-//     emit isMidiImportPanelVisibleChanged();
-// }
-
-// bool NotationPageModel::isMidiImportPanelVisible() const
-// {
-//     const muse::dock::IDockWindow* window = dockWindowProvider()->window();
-//     return window && window->isDockOpenAndCurrentInFrame(MIDI_IMPORT_PANEL_NAME);
-// }
-
-// bool NotationPageModel::isMidiImportPanelVisible() const
-// {
-//     const muse::dock::IDockWindow* window = dockWindowProvider()->window();
-//     return window && window->isDockOpenAndCurrentInFrame(MIDI_IMPORT_PANEL_NAME);
-// }
+bool NotationPageModel::isMidiFile(const muse::io::path_t& filePath) const
+{
+    return filePath.toQString().endsWith(".mid", Qt::CaseInsensitive);
+}

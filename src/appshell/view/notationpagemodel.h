@@ -77,13 +77,10 @@ public:
 
     Q_INVOKABLE QString statusBarName() const;
     void setMidiImportPanelVisible(bool visible);
-    //Q_INVOKABLE void toggleMidiImportPanel();
-    // bool isMidiImportPanelVisible() const;
-    
-    signals:
+
+signals:
     void isNavigatorVisibleChanged();
     void isBraillePanelVisibleChanged();
-    // void isMidiImportPanelVisibleChanged();
 
 private:
     void onNotationChanged();
@@ -92,6 +89,8 @@ private:
 
     void updateDrumsetPanelVisibility();
     void updatePercussionPanelVisibility();
+
+    bool isMidiFile(const muse::io::path_t& filePath) const;
 
 };
 }
