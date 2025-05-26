@@ -159,12 +159,17 @@ QString NotationPageModel::statusBarName() const
     return NOTATION_STATUSBAR_NAME;
 }
 
+
+
 void NotationPageModel::onNotationChanged()
 {
     INotationPtr notation = globalContext()->currentNotation();
     if (!notation) {
         return;
     }
+
+    // open the midi panel
+    setMidiImportPanelVisible(true);
 
     INotationNoteInputPtr noteInput = notation->interaction()->noteInput();
     noteInput->stateChanged().onNotify(this, [this]() {
@@ -338,3 +343,21 @@ void NotationPageModel::setMidiImportPanelVisible(bool visible)
     };
     setMidiImportPanelOpen(visible);
 }
+
+// void NotationPageModel::toggleMidiImportPanel()
+// {
+//     setMidiImportPanelVisible(!isMidiImportPanelVisible());
+//     emit isMidiImportPanelVisibleChanged();
+// }
+
+// bool NotationPageModel::isMidiImportPanelVisible() const
+// {
+//     const muse::dock::IDockWindow* window = dockWindowProvider()->window();
+//     return window && window->isDockOpenAndCurrentInFrame(MIDI_IMPORT_PANEL_NAME);
+// }
+
+// bool NotationPageModel::isMidiImportPanelVisible() const
+// {
+//     const muse::dock::IDockWindow* window = dockWindowProvider()->window();
+//     return window && window->isDockOpenAndCurrentInFrame(MIDI_IMPORT_PANEL_NAME);
+// }

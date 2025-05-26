@@ -41,6 +41,9 @@
 #include "projecterrors.h"
 #include "projectextensionpoints.h"
 
+#include <cstdio> //delete
+#include <iostream> //delete
+
 #include "log.h"
 
 using namespace mu;
@@ -338,6 +341,12 @@ Ret ProjectActionsController::doOpenProject(const muse::io::path_t& filePath)
 
     globalContext()->setCurrentProject(project);
 
+    // if is midi import
+    if (filePath.toQString().contains(".mid", Qt::CaseInsensitive)) {
+        std::cout << "its a midi file!\n";
+        
+    }
+
     return doFinishOpenProject();
 }
 
@@ -414,6 +423,8 @@ Ret ProjectActionsController::doFinishOpenProject()
             });
         });
     }
+
+    // if is a midi file import, we need to 
 
     return openPageIfNeed(NOTATION_PAGE_URI);
 }

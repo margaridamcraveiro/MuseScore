@@ -77,10 +77,13 @@ public:
 
     Q_INVOKABLE QString statusBarName() const;
     void setMidiImportPanelVisible(bool visible);
-
-signals:
+    //Q_INVOKABLE void toggleMidiImportPanel();
+    // bool isMidiImportPanelVisible() const;
+    
+    signals:
     void isNavigatorVisibleChanged();
     void isBraillePanelVisibleChanged();
+    // void isMidiImportPanelVisibleChanged();
 
 private:
     void onNotationChanged();
