@@ -29,7 +29,7 @@
 #include "actions/actionable.h"
 #include "actions/iactionsdispatcher.h"
 #include "context/iglobalcontext.h"
-#include "iappshellconfiguration.h"
+#include "../iappshellconfiguration.h"
 #include "notation/inotationconfiguration.h"
 #include "braille/ibrailleconfiguration.h"
 #include "dockwindow/idockwindowprovider.h"
@@ -76,6 +76,7 @@ public:
     Q_INVOKABLE QString percussionPanelName() const;
 
     Q_INVOKABLE QString statusBarName() const;
+    void setMidiImportPanelVisible(bool visible);
 
 signals:
     void isNavigatorVisibleChanged();
@@ -88,6 +89,7 @@ private:
 
     void updateDrumsetPanelVisibility();
     void updatePercussionPanelVisibility();
+
 };
 }
 
