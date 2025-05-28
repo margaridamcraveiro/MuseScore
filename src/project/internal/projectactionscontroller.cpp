@@ -341,12 +341,6 @@ Ret ProjectActionsController::doOpenProject(const muse::io::path_t& filePath)
 
     globalContext()->setCurrentProject(project);
 
-    // if is midi import
-    if (filePath.toQString().contains(".mid", Qt::CaseInsensitive)) {
-        std::cout << "its a midi file!\n";
-        
-    }
-
     return doFinishOpenProject();
 }
 
