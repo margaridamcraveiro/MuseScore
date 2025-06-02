@@ -40,7 +40,7 @@ using namespace mu::project;
 
 static void midi_init_qrc()
 {
-    Q_INIT_RESOURCE(midi);
+    Q_INIT_RESOURCE(midiImportPanel);
 }
 
 std::string MidiModule::moduleName() const
