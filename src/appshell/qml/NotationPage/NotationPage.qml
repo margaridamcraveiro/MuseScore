@@ -508,9 +508,10 @@ DockPage {
                 navigationSection: midiImportPanel.navigationSection
                 contentNavigationPanelOrderStart: midiImportPanel.contentNavigationPanelOrderStart
 
-                // Component.onCompleted: {
+                //Component.onCompleted: {
                 //     midiImportPanel.contextMenuModel = contextMenuModel
-                // }
+                //}
+                
             }
             // Item{}
         },

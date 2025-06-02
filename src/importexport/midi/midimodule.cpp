@@ -28,7 +28,7 @@
 #include "project/inotationwritersregister.h"
 #include "internal/notationmidiwriter.h"
 
-#include "importexport/midi/internal/midipanel/midiImport_panel.h"
+#include "importexport/midi/internal/midipanel/midiImportPanelNew.h"
 
 #include "internal/midiconfiguration.h"
 
@@ -74,11 +74,10 @@ void MidiModule::registerResources()
 }
 
 
-// void MidiModule::registerUiTypes()
-// {
-//     qmlRegisterType<Ms::MidiImportPanel>("MuseScore.Midi", 1, 0, "MidiImportPanel");
-    
-// }
+void MidiModule::registerUiTypes()
+ {
+    qmlRegisterType<Ms::MidiImportPanelNew>("MidiImportPanelNew", 1, 0, "MidiImportPanelNew");
+}
 
 void MidiModule::onInit(const muse::IApplication::RunMode& mode)
 {
