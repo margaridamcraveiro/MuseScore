@@ -42,6 +42,8 @@ set(MODULE_SRC
     ${CMAKE_CURRENT_LIST_DIR}/internal/notationmidireader.h
     ${CMAKE_CURRENT_LIST_DIR}/internal/notationmidiwriter.cpp
     ${CMAKE_CURRENT_LIST_DIR}/internal/notationmidiwriter.h
+    ${CMAKE_CURRENT_LIST_DIR}/internal/midipanel/midiImportPanelNew.h
+    ${CMAKE_CURRENT_LIST_DIR}/internal/midipanel/midiImportPanelNew.cpp
     )
 
 add_subdirectory(${THIRDPARTY_DIR}/beatroot beatroot)

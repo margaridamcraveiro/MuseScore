@@ -8,6 +8,7 @@
 #include "importexport/midi/internal/midiimport/importmidi_operations.h"
 
 #include "context/iglobalcontext.h"
+
 #include "engraving/dom/masterscore.h"
 
 namespace Ms {

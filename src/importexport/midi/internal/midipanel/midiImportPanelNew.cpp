@@ -13,6 +13,7 @@
 
 #include "context/iglobalcontext.h"
 
+
 namespace Ms {
 
 MidiImportPanelNew::MidiImportPanelNew(QObject* parent)
@@ -71,7 +72,7 @@ void MidiImportPanelNew::apply() {
     if (!canImportMidi())
         return;
 
-    m_importInProgress = true;
+    /*m_importInProgress = true;
 
     auto& opers = mu::iex::midi::midiImportOperations;
     mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, m_midiFile.toStdString());
@@ -86,12 +87,13 @@ void MidiImportPanelNew::apply() {
 
     setReorderedIndexes();
 
-    MasterScore* score =  (MasterScore*) m_globalContext->currentNotation()->elements()->msScore();
+    //MasterScore* score =  (MasterScore*) m_globalContext->currentNotation()->elements()->msScore();
 
 
     saveTableViewState();
-
+    
     m_importInProgress = false;
+    */
 }
 
 void MidiImportPanelNew::cancel() {
