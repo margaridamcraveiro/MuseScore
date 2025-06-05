@@ -41,6 +41,7 @@ public:
     Q_INVOKABLE void cancel();
     Q_INVOKABLE void moveTrackUp(int index);
     Q_INVOKABLE void moveTrackDown(int index);
+    Q_INVOKABLE void fillCharsetList();
 
     void setMidiFile(const QString& fileName);
     void setModel(mu::iex::midi::TracksModel* model);
@@ -49,6 +50,9 @@ signals:
     void userNameChanged();
     void visibleChanged();
     void currentCharsetChanged();
+    void midiFileChanged();            
+    void modelChanged();               
+    void charsetListChanged();
 
 private:
     bool canImportMidi() const;

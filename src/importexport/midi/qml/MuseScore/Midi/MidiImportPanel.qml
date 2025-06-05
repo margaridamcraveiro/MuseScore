@@ -12,6 +12,11 @@ import MuseScore.Palette 1.0
 Item {    
     id: root
 
+    MidiImportPanelNew {
+        id: midiPanel
+        Component.onCompleted: midiPanel.fillCharsetList()
+    }
+
     property alias navigationSection: navPanel.section
     property alias contentNavigationPanelOrderStart: navPanel.order
 
@@ -27,79 +32,68 @@ Item {
         spacing: 8
         anchors.margins: 12
 
-        // Top Bar estendida com botões e charset
         RowLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: 40
             spacing: 6
 
-            // Fechar painel
             ToolButton {
                 icon.source: "qrc:/data/icons/png/window-close.png"
                 ToolTip.text: qsTr("Fechar painel de importação MIDI")
                 onClicked: {
-                    // lógica de fechar
+                    midiPanel.visible = false
                 }
             }
 
-            // Mover faixa para cima
             ToolButton {
                 icon.source: "qrc:/data/icons/arrow_up.svg"
                 ToolTip.text: qsTr("Mover faixa para cima")
                 onClicked: {
-                    // lógica para mover faixa para cima
+                    midiPanel.moveTrackUp(1) // ou outro índice
                 }
             }
 
-            // Mover faixa para baixo
             ToolButton {
                 icon.source: "qrc:/data/icons/arrow_down.svg"
                 ToolTip.text: qsTr("Mover faixa para baixo")
                 onClicked: {
-                    // lógica para mover faixa para baixo
+                    midiPanel.moveTrackDown(1) // ou outro índice
                 }
             }
 
-            Item { Layout.fillWidth: true } // expansor central
+            Item { Layout.fillWidth: true }
 
-            // Charset label
             Label {
                 text: qsTr("Text charset:")
                 verticalAlignment: Label.AlignVCenter
             }
 
-            // ComboBox de charset
             ComboBox {
                 id: comboBoxCharset
                 editable: true
                 Layout.preferredWidth: 150
-                model: ["UTF-8", "ISO-8859-1", "Windows-1252"]
+                model: midiPanel.charsetList
+                currentIndex: midiPanel.charsetList.indexOf(midiPanel.currentCharset)
                 ToolTip.text: qsTr("Selecionar charset de texto")
-                onAccepted: {
-                    // lógica para charset
+
+                onCurrentTextChanged: {
+                    midiPanel.currentCharset = currentText
                 }
             }
 
-            // Botão Apply
             Button {
                 text: qsTr("Apply")
                 ToolTip.text: qsTr("Aplicar alterações de importação MIDI")
-                onClicked: {
-                    // lógica de aplicar
-                }
+                onClicked: midiPanel.apply()
             }
 
-            // Botão Cancel
             Button {
-                text: qsTr("Cancel")
-                ToolTip.text: qsTr("Cancelar alterações")
-                onClicked: {
-                    // lógica de cancelar
-                }
+                text: qsTr("Clear Changes")
+                ToolTip.text: qsTr("Clear Changes")
+                onClicked: midiPanel.cancel()
             }
         }
 
-        // Placeholder para a TracksView
         Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -116,7 +110,6 @@ Item {
             }
         }
 
-        // Simulação de tabela
         Flickable {
             Layout.fillWidth: true
             Layout.preferredHeight: 200
@@ -133,7 +126,7 @@ Item {
 
                 RowLayout {
                     anchors.fill: parent
-                    spacing: 4
+                    spacing: 10
                     Repeater {
                         model: ["Channel", "Instrument", "Sound", "Quantisation", "Voices", "Tuplets", "Human", "Clef", "Staccato", "Swing"]
                         delegate: Rectangle {

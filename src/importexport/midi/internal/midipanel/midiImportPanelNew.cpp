@@ -51,7 +51,38 @@ QStringList MidiImportPanelNew::charsetList() const {
 }
 
 void MidiImportPanelNew::setMidiFile(const QString& fileName) {
+    if (m_midiFile == fileName)
+        return;
+
     m_midiFile = fileName;
+    emit midiFileChanged();
+
+    if (!QFile(fileName).exists())
+        return;
+
+    auto& opers = mu::iex::midi::midiImportOperations;
+    mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, fileName);
+
+    if (opers.data()->processingsOfOpenedFile == 1) {
+        ++opers.data()->processingsOfOpenedFile;
+        if (m_model)
+            m_model->clear();
+    }
+
+    if (m_model) {
+        m_model->reset(
+            opers.data()->trackOpers,
+            mu::iex::midi::MidiLyrics::makeLyricsListForUI(),
+            opers.data()->trackCount,
+            fileName,
+            !opers.data()->humanBeatData.beatSet.empty(),
+            opers.data()->hasTempoText,
+            !opers.data()->chordNames.empty()
+        );
+    }
+
+    m_currentCharset = opers.data()->charset;
+    emit currentCharsetChanged();
 }
 
 void MidiImportPanelNew::setModel(mu::iex::midi::TracksModel* model) {
@@ -72,37 +103,40 @@ void MidiImportPanelNew::apply() {
     if (!canImportMidi())
         return;
 
-    /*m_importInProgress = true;
-
-    auto& opers = mu::iex::midi::midiImportOperations;
-    mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, m_midiFile.toStdString());
-
-    if (opers.data()->charset != m_currentCharset.toStdString()) {
-        opers.data()->charset = m_currentCharset.toStdString();
-        m_model->updateCharset();
-    }
-
-    m_model->notifyAllApplied();
-    opers.data()->trackOpers = m_model->trackOpers();
-
-    setReorderedIndexes();
-
-    //MasterScore* score =  (MasterScore*) m_globalContext->currentNotation()->elements()->msScore();
-
-
-    saveTableViewState();
-    
-    m_importInProgress = false;
-    */
 }
 
 void MidiImportPanelNew::cancel() {
+    // TODO
 }
 
 void MidiImportPanelNew::moveTrackUp(int index) {
+    /*if (!m_model || index <= 0)
+        return;
+
+    m_model->swapTracks(index, index - 1);
+    emit modelChanged();*/
 }
 
 void MidiImportPanelNew::moveTrackDown(int index) {
+    /*if (!m_model || index >= m_model->rowCount() - 1)
+        return;
+
+    m_model->swapTracks(index, index + 1);
+    emit modelChanged();*/
 }
+
+void MidiImportPanelNew::fillCharsetList() {
+    m_charsetList = {
+        "UTF-8",
+        "ISO-8859-1",
+        "Windows-1252",
+        "Shift-JIS",
+        "GB18030"
+    };
+
+    std::sort(m_charsetList.begin(), m_charsetList.end());
+    emit charsetListChanged();
+}
+
 
 } // namespace Ms
