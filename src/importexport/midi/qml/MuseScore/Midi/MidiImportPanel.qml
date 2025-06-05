@@ -37,30 +37,6 @@ Item {
             Layout.preferredHeight: 40
             spacing: 6
 
-            ToolButton {
-                icon.source: "qrc:/data/icons/png/window-close.png"
-                ToolTip.text: qsTr("Fechar painel de importação MIDI")
-                onClicked: {
-                    midiPanel.visible = false
-                }
-            }
-
-            ToolButton {
-                icon.source: "qrc:/data/icons/arrow_up.svg"
-                ToolTip.text: qsTr("Mover faixa para cima")
-                onClicked: {
-                    midiPanel.moveTrackUp(1) // ou outro índice
-                }
-            }
-
-            ToolButton {
-                icon.source: "qrc:/data/icons/arrow_down.svg"
-                ToolTip.text: qsTr("Mover faixa para baixo")
-                onClicked: {
-                    midiPanel.moveTrackDown(1) // ou outro índice
-                }
-            }
-
             Item { Layout.fillWidth: true }
 
             Label {
@@ -74,7 +50,7 @@ Item {
                 Layout.preferredWidth: 150
                 model: midiPanel.charsetList
                 currentIndex: midiPanel.charsetList.indexOf(midiPanel.currentCharset)
-                ToolTip.text: qsTr("Selecionar charset de texto")
+                ToolTip.text: qsTr("Select text Charset")
 
                 onCurrentTextChanged: {
                     midiPanel.currentCharset = currentText
@@ -83,7 +59,7 @@ Item {
 
             Button {
                 text: qsTr("Apply")
-                ToolTip.text: qsTr("Aplicar alterações de importação MIDI")
+                ToolTip.text: qsTr("Apply")
                 onClicked: midiPanel.apply()
             }
 

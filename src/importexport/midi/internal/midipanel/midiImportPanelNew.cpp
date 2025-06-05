@@ -97,7 +97,6 @@ void MidiImportPanelNew::setModel(mu::iex::midi::TracksModel* model) {
 }
 
 
-
 bool MidiImportPanelNew::canImportMidi() const {
     return (m_model != nullptr) && (!m_midiFile.isEmpty());
 }
@@ -110,7 +109,7 @@ void MidiImportPanelNew::saveTableViewState() {
 
 void MidiImportPanelNew::apply()
 {
-    /*if (!canImportMidi())
+    if (!canImportMidi())
         return;
 
     m_importInProgress = true;
@@ -118,7 +117,6 @@ void MidiImportPanelNew::apply()
     auto &opers = mu::iex::midi::midiImportOperations;
     mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, m_midiFile);
 
-    // Atualizar charset se mudou
     if (opers.data()->charset != m_currentCharset) {
         opers.data()->charset = m_currentCharset;
         if (m_model)
@@ -132,23 +130,30 @@ void MidiImportPanelNew::apply()
 
     setReorderedIndexes();
 
-    // Aqui podes colocar código para evitar popups ou guardar estado, se for preciso
     saveTableViewState();
 
-    m_importInProgress = false;*/
+    m_importInProgress = false;
 }
 
 void MidiImportPanelNew::cancel() {
-    // No original, o cancel revertia alterações e limpava estado
-    /*if (m_model)
-        m_model->clear();
+    qDebug() << "CANCEL PRESSED";
+    auto& opers = mu::iex::midi::midiImportOperations;
+    mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, m_midiFile);
 
-    m_midiFile.clear();
-    emit midiFileChanged();
+    if (!m_model)
+        return;
 
-    // Opcional: resetar outros estados como charset ou reordenação
-    m_currentCharset.clear();
-    emit currentCharsetChanged();*/
+    m_model->reset(opers.data()->trackOpers,
+                   mu::iex::midi::MidiLyrics::makeLyricsListForUI(),
+                   opers.data()->trackCount,
+                   m_midiFile,
+                   !opers.data()->humanBeatData.beatSet.empty(),
+                   opers.data()->hasTempoText,
+                   !opers.data()->chordNames.empty());
+
+    m_currentCharset = opers.data()->charset;
+    emit currentCharsetChanged();
+    emit charsetListChanged();  
 }
 
 void MidiImportPanelNew::moveTrackUp(int index) {
