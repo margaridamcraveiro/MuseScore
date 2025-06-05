@@ -166,11 +166,9 @@ void NotationPageModel::onNotationChanged()
         return;
     }
 
-    setMidiImportPanelVisible(false);
     // if its a midi file, opens the midi import panel
     bool check = isMidiFile(globalContext()->currentProject()->path().toQString());
-    if(check)
-        setMidiImportPanelVisible(true);
+    setMidiImportPanelVisible(check);
     
     INotationNoteInputPtr noteInput = notation->interaction()->noteInput();
     noteInput->stateChanged().onNotify(this, [this]() {
