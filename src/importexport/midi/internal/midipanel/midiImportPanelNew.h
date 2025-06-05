@@ -45,6 +45,7 @@ public:
 
     void setMidiFile(const QString& fileName);
     void setModel(mu::iex::midi::TracksModel* model);
+    
 
 signals:
     void userNameChanged();
@@ -58,12 +59,13 @@ private:
     bool canImportMidi() const;
     void setReorderedIndexes();
     void saveTableViewState();
+    //QTableView* m_tracksView = nullptr;
 
 private:
     QString m_userName;
     bool m_visible = false;
     QString m_currentCharset = "UTF-8";
-    QStringList m_charsetList = {"UTF-8", "ISO-8859-1", "Windows-1252"};
+    QStringList m_charsetList; 
 
     QString m_midiFile;
     mu::iex::midi::TracksModel* m_model = nullptr;
