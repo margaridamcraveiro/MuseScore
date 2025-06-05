@@ -12,10 +12,18 @@ import MuseScore.Palette 1.0
 Item {    
     id: root
 
+    TracksModel {
+        id: tracksModel
+    }
+    
     MidiImportPanelNew {
         id: midiPanel
-        Component.onCompleted: midiPanel.fillCharsetList()
+        Component.onCompleted: {
+            midiPanel.fillCharsetList()
+            midiPanel.setModel(tracksModel)
+        }
     }
+
 
     property alias navigationSection: navPanel.section
     property alias contentNavigationPanelOrderStart: navPanel.order

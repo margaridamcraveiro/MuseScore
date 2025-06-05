@@ -77,6 +77,7 @@ void MidiModule::registerResources()
 void MidiModule::registerUiTypes()
 {
     qmlRegisterType<Ms::MidiImportPanelNew>("MuseScore.Midi", 1, 0, "MidiImportPanelNew");
+    qmlRegisterType<mu::iex::midi::TracksModel>("MuseScore.Midi", 1, 0, "TracksModel");
 }
 
 void MidiModule::onInit(const muse::IApplication::RunMode& mode)

@@ -42,9 +42,9 @@ public:
     Q_INVOKABLE void moveTrackUp(int index);
     Q_INVOKABLE void moveTrackDown(int index);
     Q_INVOKABLE void fillCharsetList();
+    Q_INVOKABLE void setModel(mu::iex::midi::TracksModel* model);
 
     void setMidiFile(const QString& fileName);
-    void setModel(mu::iex::midi::TracksModel* model);
     
 
 signals:

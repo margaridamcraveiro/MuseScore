@@ -134,26 +134,30 @@ void MidiImportPanelNew::apply()
 
     m_importInProgress = false;
 }
-
 void MidiImportPanelNew::cancel() {
-    qDebug() << "CANCEL PRESSED";
-    auto& opers = mu::iex::midi::midiImportOperations;
-    mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, m_midiFile);
+    try {
+        qDebug() << "CANCEL PRESSED";
+        auto& opers = mu::iex::midi::midiImportOperations;
+        mu::iex::midi::MidiOperations::CurrentMidiFileSetter setCurrentMidiFile(opers, m_midiFile);
 
-    if (!m_model)
-        return;
+        if (!m_model)
+            return;
 
-    m_model->reset(opers.data()->trackOpers,
-                   mu::iex::midi::MidiLyrics::makeLyricsListForUI(),
-                   opers.data()->trackCount,
-                   m_midiFile,
-                   !opers.data()->humanBeatData.beatSet.empty(),
-                   opers.data()->hasTempoText,
-                   !opers.data()->chordNames.empty());
+        m_model->reset(opers.data()->trackOpers,
+                       mu::iex::midi::MidiLyrics::makeLyricsListForUI(),
+                       opers.data()->trackCount,
+                       m_midiFile,
+                       !opers.data()->humanBeatData.beatSet.empty(),
+                       opers.data()->hasTempoText,
+                       !opers.data()->chordNames.empty());
 
-    m_currentCharset = opers.data()->charset;
-    emit currentCharsetChanged();
-    emit charsetListChanged();  
+        m_currentCharset = opers.data()->charset;
+        emit currentCharsetChanged();
+    } catch (const std::exception& e) {
+        qWarning() << "Exception in cancel(): " << e.what();
+    } catch (...) {
+        qWarning() << "Unknown exception in cancel()";
+    }
 }
 
 void MidiImportPanelNew::moveTrackUp(int index) {
