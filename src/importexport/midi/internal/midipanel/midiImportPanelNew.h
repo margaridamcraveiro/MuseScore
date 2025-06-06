@@ -13,7 +13,7 @@
 
 namespace Ms {
 
-class MidiImportPanelNew : public QObject
+class MidiImportPanelNew : public QObject 
 {
     Q_OBJECT
     Q_PROPERTY(QString userName READ userName WRITE setUserName NOTIFY userNameChanged)
@@ -22,7 +22,10 @@ class MidiImportPanelNew : public QObject
     Q_PROPERTY(QStringList charsetList READ charsetList CONSTANT)
     QML_ELEMENT
 
+    
+    
 public:
+    //muse::Inject<mu::context::IGlobalContext> globalContext { this };
     explicit MidiImportPanelNew(QObject* parent = nullptr);
     ~MidiImportPanelNew();
 
@@ -39,8 +42,6 @@ public:
 
     Q_INVOKABLE void apply();
     Q_INVOKABLE void cancel();
-    Q_INVOKABLE void moveTrackUp(int index);
-    Q_INVOKABLE void moveTrackDown(int index);
     Q_INVOKABLE void fillCharsetList();
     Q_INVOKABLE void setModel(mu::iex::midi::TracksModel* model);
 

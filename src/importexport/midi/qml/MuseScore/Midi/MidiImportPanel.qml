@@ -12,15 +12,16 @@ import MuseScore.Palette 1.0
 Item {    
     id: root
 
+    /*
     TracksModel {
         id: tracksModel
-    }
+    }*/
     
     MidiImportPanelNew {
         id: midiPanel
         Component.onCompleted: {
             midiPanel.fillCharsetList()
-            midiPanel.setModel(tracksModel)
+            //midiPanel.setModel(tracksModel)
         }
     }
 

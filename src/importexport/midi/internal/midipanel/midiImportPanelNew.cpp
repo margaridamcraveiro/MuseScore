@@ -94,6 +94,15 @@ void MidiImportPanelNew::setMidiFile(const QString& fileName) {
 
 void MidiImportPanelNew::setModel(mu::iex::midi::TracksModel* model) {
     m_model = model;
+
+    /*
+    if (globalContext->currentNotation()) {
+        const QString midiFilePath = globalContext->currentProject()->path();
+
+        if (!midiFilePath.isEmpty()) {
+            setMidiFile(midiFilePath); 
+        }
+    }*/
 }
 
 
@@ -158,39 +167,6 @@ void MidiImportPanelNew::cancel() {
     } catch (...) {
         qWarning() << "Unknown exception in cancel()";
     }
-}
-
-void MidiImportPanelNew::moveTrackUp(int index) {
-    /*if (!m_tracksView)
-        return;
-
-    const auto selectedItems = m_tracksView->selectionModel()->selectedIndexes();
-    if (selectedItems.isEmpty())
-        return;
-
-    const int curRow = selectedItems[0].row();
-    const int visIndex = m_tracksView->verticalHeader()->visualIndex(curRow);
-
-    if (visIndex <= 0)
-        return;
-
-    m_tracksView->verticalHeader()->moveSection(visIndex, visIndex - 1);
-    */
-}
-
-void MidiImportPanelNew::moveTrackDown(int index) {
-    /*const auto selected = m_tracksView->selectionModel()->selectedIndexes();
-    if (selected.isEmpty())
-        return;
-
-    const int curRow = selected[0].row();
-    const int visIndex = m_tracksView->verticalHeader()->visualIndex(curRow);
-
-    if (visIndex >= m_tracksView->model()->rowCount() - 1)
-        return;
-
-    m_tracksView->verticalHeader()->moveSection(visIndex, visIndex + 1);
-    */
 }
 
 void MidiImportPanelNew::fillCharsetList() {
