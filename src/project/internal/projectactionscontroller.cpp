@@ -415,6 +415,8 @@ Ret ProjectActionsController::doFinishOpenProject()
         });
     }
 
+    // if is a midi file import, we need to 
+
     return openPageIfNeed(NOTATION_PAGE_URI);
 }
 

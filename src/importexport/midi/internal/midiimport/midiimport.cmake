@@ -56,3 +56,13 @@ set (MIDIIMPORT_SRC
     ${CMAKE_CURRENT_LIST_DIR}/importmidi_voice.cpp
     ${CMAKE_CURRENT_LIST_DIR}/importmidi_voice.h
     )
+
+
+# Must not end up in the same unity build file as any file that contains
+# `using namespace mu::engraving;`, because of ambiguity between
+# `mu::engraving::Event` and BeatRoot's `::Event`.
+set_source_files_properties(
+    ${CMAKE_CURRENT_LIST_DIR}/importmidi_beat.cpp
+    PROPERTIES
+    SKIP_UNITY_BUILD_INCLUSION ON
+)

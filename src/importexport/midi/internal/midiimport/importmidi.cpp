@@ -23,6 +23,8 @@
 #include <set>
 
 #include <QFile>
+#include <QDir>
+#include <QQuickView>
 
 #include "translation.h"
 
@@ -77,6 +79,10 @@
 #include "importmidi_tuplet.h"
 #include "importmidi_tuplet_tonotes.h"
 #include "importmidi_voice.h"
+
+#include "../midipanel/midiImport_panel.h"
+#include "modularity/ioc.h"
+#include "ui/inavigation.h"
 
 #include "log.h"
 
@@ -1281,6 +1287,13 @@ Err importMidi(MasterScore* score, const QString& name)
         loadMidiData(mf);
         opers.setMidiFileData(name, mf);
     }
+    // load the MidiImportPanel
+    // Using QQmlComponent
+    QString path = QCoreApplication::applicationDirPath() + "/importexport/midi/internal/midipanel/midiImport_panel.qml";
+    QUrl url = QUrl::fromLocalFile(QDir::cleanPath(path));
+    QQmlEngine engine;
+    QQmlComponent component(&engine, url);
+    QObject *object = component.create();
 
     opers.data()->tracks = convertMidi(score, opers.midiFile(name));
     ++opers.data()->processingsOfOpenedFile;

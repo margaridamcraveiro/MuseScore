@@ -29,7 +29,7 @@
 #include "actions/actionable.h"
 #include "actions/iactionsdispatcher.h"
 #include "context/iglobalcontext.h"
-#include "iappshellconfiguration.h"
+#include "../iappshellconfiguration.h"
 #include "notation/inotationconfiguration.h"
 #include "braille/ibrailleconfiguration.h"
 #include "dockwindow/idockwindowprovider.h"
@@ -70,11 +70,13 @@ public:
 
     Q_INVOKABLE QString mixerPanelName() const;
     Q_INVOKABLE QString pianoKeyboardPanelName() const;
+    Q_INVOKABLE QString midiImportPanelName() const;
     Q_INVOKABLE QString timelinePanelName() const;
     Q_INVOKABLE QString drumsetPanelName() const;
     Q_INVOKABLE QString percussionPanelName() const;
 
     Q_INVOKABLE QString statusBarName() const;
+    void setMidiImportPanelVisible(bool visible);
 
 signals:
     void isNavigatorVisibleChanged();
@@ -87,6 +89,9 @@ private:
 
     void updateDrumsetPanelVisibility();
     void updatePercussionPanelVisibility();
+
+    bool isMidiFile(const muse::io::path_t& filePath) const;
+
 };
 }
 

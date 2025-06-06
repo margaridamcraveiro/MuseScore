@@ -134,6 +134,11 @@ QString NotationPageModel::pianoKeyboardPanelName() const
     return PIANO_KEYBOARD_PANEL_NAME;
 }
 
+QString NotationPageModel::midiImportPanelName() const
+{
+    return MIDI_IMPORT_PANEL_NAME;
+}
+
 QString NotationPageModel::timelinePanelName() const
 {
     return TIMELINE_PANEL_NAME;
@@ -161,6 +166,10 @@ void NotationPageModel::onNotationChanged()
         return;
     }
 
+    // if its a midi file, opens the midi import panel
+    bool check = isMidiFile(globalContext()->currentProject()->path().toQString());
+    setMidiImportPanelVisible(check);
+    
     INotationNoteInputPtr noteInput = notation->interaction()->noteInput();
     noteInput->stateChanged().onNotify(this, [this]() {
         updateDrumsetPanelVisibility();
@@ -312,4 +321,29 @@ void NotationPageModel::updatePercussionPanelVisibility()
     }
 
     setPercussionPanelOpen(true);
+}
+
+void NotationPageModel::setMidiImportPanelVisible(bool visible)
+{
+    const muse::dock::IDockWindow* window = dockWindowProvider()->window();
+    if (!window) {
+        return;
+    }
+
+    auto setMidiImportPanelOpen = [this, window](bool open) {
+        if (open == window->isDockOpenAndCurrentInFrame(MIDI_IMPORT_PANEL_NAME)) {
+            return;
+        }
+
+        //! NOTE: ensure we don't dispatch it multiple times in succession
+        muse::async::Async::call(this, [=]() {
+            dispatcher()->dispatch("dock-set-open", ActionData::make_arg2<QString, bool>(MIDI_IMPORT_PANEL_NAME, open));
+        });
+    };
+    setMidiImportPanelOpen(visible);
+}
+
+bool NotationPageModel::isMidiFile(const muse::io::path_t& filePath) const
+{
+    return filePath.toQString().endsWith(".mid", Qt::CaseInsensitive);
 }

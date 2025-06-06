@@ -20,14 +20,19 @@
 
 declare_module(iex_midi)
 
+set(MODULE_QRC midiImportPanel.qrc)
+set(MODULE_QML_IMPORT ${CMAKE_CURRENT_LIST_DIR}/qml)
+
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midishared/midishared.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midiimport/midiimport.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/internal/midiexport/midiexport.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/internal/midipanel/midiImport_ui.cmake)
 
 set(MODULE_SRC
     ${MIDISHARED_SRC}
     ${MIDIIMPORT_SRC}
     ${MIDIEXPORT_SRC}
+    ${IMPORTMIDIUI_SRC}
     ${CMAKE_CURRENT_LIST_DIR}/midimodule.cpp
     ${CMAKE_CURRENT_LIST_DIR}/midimodule.h
     ${CMAKE_CURRENT_LIST_DIR}/imidiconfiguration.h
@@ -37,6 +42,8 @@ set(MODULE_SRC
     ${CMAKE_CURRENT_LIST_DIR}/internal/notationmidireader.h
     ${CMAKE_CURRENT_LIST_DIR}/internal/notationmidiwriter.cpp
     ${CMAKE_CURRENT_LIST_DIR}/internal/notationmidiwriter.h
+    ${CMAKE_CURRENT_LIST_DIR}/internal/midipanel/midiImportPanelNew.h
+    ${CMAKE_CURRENT_LIST_DIR}/internal/midipanel/midiImportPanelNew.cpp
     )
 
 add_subdirectory(${THIRDPARTY_DIR}/beatroot beatroot)
